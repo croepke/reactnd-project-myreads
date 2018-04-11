@@ -9,7 +9,7 @@ class Bookshelf extends Component {
         <ol className="books-grid">
           { this.props.books
               .filter((book) => (book.shelf == this.props.shelf))
-              .map((book) => (<Book key={book.id} details={book} />))
+              .map((book) => (<Book key={book.id} details={book} onUpdate={this.props.onUpdate} />))
           }
         </ol>
       </div>

@@ -24,6 +24,24 @@ class BooksApp extends React.Component {
       })
   }
 
+  updateBook = (book, shelf) => {
+    BooksAPI.update(book, shelf)
+      .then((ret) => {
+        // Take a copy of current state and the book to be updated
+        const books = [...this.state.books];
+        const bookUpdated = {...book};
+        // Update book with new shelf
+        bookUpdated.shelf = shelf;
+        // Get the array index where the updated book lives and update
+        const idx = books.findIndex(elem => elem.id === book.id);
+        books[idx] = bookUpdated;
+        // Set new state
+        this.setState((currentState) => ({
+          books
+        }))
+      })
+  }
+
   render() {
     return (
       <div className="app">
@@ -57,15 +75,27 @@ class BooksApp extends React.Component {
               <div>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Currently Reading</h2>
-                  <Bookshelf shelf='currentlyReading' books={this.state.books} />
+                  <Bookshelf
+                    shelf='currentlyReading'
+                    books={this.state.books}
+                    onUpdate={this.updateBook}
+                  />
                 </div>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Want to Read</h2>
-                  <Bookshelf shelf='wantToRead' books={this.state.books} />
+                  <Bookshelf
+                    shelf='wantToRead'
+                    books={this.state.books}
+                    onUpdate={this.updateBook}
+                  />
                 </div>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Read</h2>
-                  <Bookshelf shelf='read' books={this.state.books} />
+                  <Bookshelf
+                    shelf='read'
+                    books={this.state.books}
+                    onUpdate={this.updateBook}
+                  />
                 </div>
               </div>
             </div>
