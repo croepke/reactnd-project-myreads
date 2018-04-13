@@ -5,6 +5,7 @@ class Book extends Component {
   render() {
     const { details, onUpdate } = this.props;
     const thumbnail = 'imageLinks' in details ? details.imageLinks.thumbnail : '';
+    const author = 'authors' in details ? details.authors[0] : '';
     return (
       <li>
         <div className="book">
@@ -21,7 +22,7 @@ class Book extends Component {
             </div>
           </div>
           <div className="book-title">{details.title}</div>
-          <div className="book-authors">{details.authors ? details.authors[0] : ''}</div>
+          <div className="book-authors">{author}</div>
         </div>
       </li>
     );
