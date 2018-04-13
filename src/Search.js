@@ -54,7 +54,7 @@ class Search extends Component {
 
     // Trigger API search only with more than 2 characters
     if(query.length>=2) {
-      BooksAPI.search(this.state.query)
+      BooksAPI.search(query)
       .then((searchBooks) => {
         // update results with merged in shelves from parent state
         this.setState(() => ({
