@@ -1,20 +1,13 @@
 import React from 'react';
 import * as BooksAPI from './BooksAPI';
 import Search from './Search.js';
-import Bookshelf from './Bookshelf.js';
+import BookList from './BookList.js';
+import { Route } from 'react-router-dom';
 import './App.css';
-import { Link, Route } from 'react-router-dom';
 
 class BooksApp extends React.Component {
   state = {
-    books: [],
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
-    showSearchPage: false
+    books: []
   }
 
   componentDidMount() {
@@ -36,11 +29,19 @@ class BooksApp extends React.Component {
         bookUpdated.shelf = shelf;
         // Get the array index where the updated book lives and update
         const idx = books.findIndex(elem => elem.id === book.id);
-        books[idx] = bookUpdated;
+        // When book is found update (or remove)
+        if(idx >= 0) {
+          shelf === 'none' ? books.splice(idx, 1) : books[idx] = bookUpdated;
+        }
+        // If book is new (no index yet), add to books
+        else {
+          books.push(bookUpdated);
+        }
+
         // Set new state
         this.setState((currentState) => ({
           books
-        }))
+        }));
       })
   }
 
@@ -48,45 +49,16 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         <Route exact path='/' render={() => (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Currently Reading</h2>
-                  <Bookshelf
-                    shelf='currentlyReading'
-                    books={this.state.books}
-                    onUpdate={this.updateBook}
-                  />
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Want to Read</h2>
-                  <Bookshelf
-                    shelf='wantToRead'
-                    books={this.state.books}
-                    onUpdate={this.updateBook}
-                  />
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Read</h2>
-                  <Bookshelf
-                    shelf='read'
-                    books={this.state.books}
-                    onUpdate={this.updateBook}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="open-search">
-              <Link to='/search'>Add a book</Link>
-            </div>
-          </div>
+          <BookList
+            books={this.state.books}
+            onUpdate={this.updateBook}
+          />
         )}/>
         <Route exact path='/search' render={() => (
-          <Search />
+          <Search
+            books={this.state.books}
+            onUpdate={this.updateBook}
+          />
         )}/>
       </div>
       )
@@ -94,4 +66,4 @@ class BooksApp extends React.Component {
   }
 
 
-export default BooksApp
+export default BooksApp;
