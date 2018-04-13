@@ -8,6 +8,10 @@ In the MyReads project, I have created a bookshelf app that allows to select and
 
 The books can be moved from shelf to shelf as well as new books can be added from a search page.
 
+
+## User Flow
+![User flow](https://github.com/croepke/reactnd-project-myreads/blob/master/H5rgmv8KYx.gif)
+
 ## Installation and start of the application 
 1. `npm install`
 2. `npm start`
