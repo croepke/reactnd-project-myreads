@@ -7,8 +7,10 @@ class Bookshelf extends Component {
     return (
       <div className="bookshelf-books">
         <ol className="books-grid">
-          { this.props.books
-              .filter((book) => (book.shelf === this.props.shelf))
+          {
+            // When Bookshelf used to display search results: Don't filter
+            this.props.books
+              .filter((book) => (this.props.search === true ? true : book.shelf === this.props.shelf))
               .map((book) => (<Book key={book.id} details={book} onUpdate={this.props.onUpdate} />))
           }
         </ol>
